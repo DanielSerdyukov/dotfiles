@@ -1,0 +1,14 @@
+[credential]
+	helper = osxkeychain
+[user]
+	name = <name>
+	email = <email>
+[alias]
+	co = checkout
+	st = status
+	ci = commit
+	br = branch
+	pom = pull origin master
+[core]
+	editor = subl -n -w
+	excludesfile = /Users/<username>/.gitignore
