@@ -1,22 +1,8 @@
-require("user.bootstrap")
-require("user.options")
-plugin("plugins.theme")
-plugin("plugins.lualine")
-plugin("plugins.treesitter")
-plugin("plugins.lsp")
-plugin("plugins.cmp")
-plugin("plugins.ibl")
-plugin("plugins.crates")
-plugin("plugins.illuminate")
-plugin("plugins.autopairs")
-plugin("plugins.whichkey")
-plugin("plugins.project")
-plugin("plugins.telescope")
-plugin("plugins.noice")
-plugin("plugins.alpha")
-lsp("lua_ls")
-lsp("rust_analyzer")
-lsp("taplo")
-require("user.lazy")
-require("user.keymaps")
-require("user.autocmds")
+require("zen")
+Zen.setup {
+  lsp_servers = {
+    "lua_ls",
+    "rust_analyzer",
+    "taplo",
+  },
+}
