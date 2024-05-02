@@ -1,6 +1,8 @@
 # editor
-export EDITOR="nvim"
-export VISUAL="nvim"
+if [ "$(command -v nvim)" ]; then
+    export EDITOR="nvim"
+    export VISUAL="nvim"
+fi
 
 # XDG
 export XDG_DATA_HOME=$HOME/.local/share
