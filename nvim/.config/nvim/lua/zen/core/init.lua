@@ -37,11 +37,11 @@ require('lazy').setup({
 })
 
 vim.api.nvim_create_autocmd("User", {
-  group = vim.api.nvim_create_augroup("set_keymaps", { clear = true }),
+  group = vim.api.nvim_create_augroup("_set_keymaps", { clear = true }),
   pattern = "VeryLazy",
   callback = function(event)
+    local utils = require("zen.utils")
     local keymaps = require("zen.config.keymaps")
-    local utils = require("zen.utils.keymaps")
-    utils.set(keymaps.global)
+    utils.keymaps.set(keymaps.global)
   end,
 })

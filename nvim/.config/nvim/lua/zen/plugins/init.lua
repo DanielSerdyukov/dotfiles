@@ -8,6 +8,7 @@ return {
   plugin("treesitter"),
   plugin("lualine"),
   plugin("bufferline"),
+  plugin("nvimtree"),
   plugin("lsp"),
   plugin("cmp"),
   plugin("ibl"),

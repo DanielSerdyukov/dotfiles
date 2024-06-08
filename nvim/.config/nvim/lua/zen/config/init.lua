@@ -9,3 +9,7 @@ function Zen.setup(params)
     Zen.lsp_servers[name] = server
   end
 end
+
+local utils = require("zen.utils")
+local autocmds = require("zen.config.autocmds")
+utils.autocmds.define(autocmds)

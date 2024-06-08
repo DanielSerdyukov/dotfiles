@@ -78,11 +78,26 @@ function M.config()
     handlers = { setup },
   }
 
-  local lsp = require("zen.utils.lsp")
+  local utils = require("zen.utils")
 
-  lsp.on_attach(function(client, buffer)
+  utils.lsp.on_attach(function(client, buffer)
     if client.supports_method("textDocument/inlayHint") then
       vim.lsp.inlay_hint.enable(true)
+    end
+
+    if client.supports_method("textDocument/formatting") then
+      utils.autocmds.define({
+        {
+          { "BufWritePre" },
+          {
+            group = "lsp_format_on_save",
+            buffer = buffer,
+            callback = function()
+              vim.lsp.buf.format()
+            end,
+          }
+        }
+      })
     end
 
     -- if client.supports_method("textDocument/codeLens") then
@@ -94,10 +109,9 @@ function M.config()
     -- end
   end)
 
-  lsp.on_attach(function(client, buffer)
-    local utils = require("zen.utils.keymaps")
+  utils.lsp.on_attach(function(client, buffer)
     local keymaps = require("zen.config.keymaps")
-    utils.set(keymaps.lsp, { buffer = buffer })
+    utils.keymaps.set(keymaps.lsp, { buffer = buffer })
   end)
 end
 

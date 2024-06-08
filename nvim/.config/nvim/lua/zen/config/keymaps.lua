@@ -1,7 +1,7 @@
 return {
   global = {
-    { "n",               "<D-n>",      ":enew<cr>",    "New Buffer" },
-    { "n",               "<D-w>",      ":bdelete<cr>", "Close Buffer" },
+    { "n",               "<leader>fn", ":enew<cr>",    "New Buffer" },
+    { "n",               "<leader>fw", ":bdelete<cr>", "Close Buffer" },
     { "n",               "<D-z>",      ":undo<cr>",    "Undo" },
     { "n",               "<S-D-z>",    ":redo<cr>",    "Redo" },
     { { "n", "i", "v" }, "<D-s>",      "<esc>:w<cr>",  "Save File" },
@@ -24,6 +24,22 @@ return {
         { "n", "<leader>gb", ts.git_branches,              "Git Branches" },
         { "n", "<leader>gc", ts.git_commits,               "Git Commits" },
         { "n", "<leader>gs", ts.git_status,                "Git Status" },
+      }
+    end,
+    function()
+      local function toggle_nvt()
+        local nvt = require("nvim-tree.api")
+        local bufnr = vim.api.nvim_get_current_buf()
+        local ft = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
+        if ft == "NvimTree" then
+          nvt.tree.toggle()
+        else
+          nvt.tree.focus()
+        end
+      end
+
+      return {
+        { "n", "<leader>fe", toggle_nvt, "Project structure" },
       }
     end
   },
