@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+#
+# Dependencies:
+# - https://github.com/sharkdp/bat
+# - https://github.com/eza-community/eza
+# - https://github.com/hpjansson/chafa
+
+if [[ $# -ne 1 ]]; then
+  >&2 echo "usage: $0 FILENAME"
+  exit 1
+fi
+
+file=${1/#\~\//$HOME/}
+type=$(file --dereference --mime -- "$file")
+
+if [[ -d $1 ]]; then
+    if [ "$(command -v eza)" ]; then
+        eza -a --tree --icons=always --color=always "$1"
+    else
+        ls -a "$1"
+    fi
+    exit
+fi
+
+if [[ $type =~ text/ ]]; then
+    if [ "$(command -v bat)" ]; then
+        bat -n --color=always --pager=never --line-range :200 "$1"
+    else
+        cat "$1"
+    fi
+    exit
+fi
+
+if [[ $type =~ image/ ]]; then
+    dim=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}
+
+    if [[ $dim = x ]]; then
+        dim=$(stty size < /dev/tty | awk '{print $2 "x" $1}')
+    fi
+
+    if [ "$(command -v chafa)" ]; then
+        chafa -f sixel -s "$dim" "$file"
+        exit
+    fi
+fi
+
+file "$1"
