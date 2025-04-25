@@ -24,7 +24,7 @@ config.window_padding = {
   bottom = 0,
 }
 config.window_frame = {
-  font_size = 10.0,
+  font_size = 12.0,
 }
 
 config.enable_kitty_keyboard = true
