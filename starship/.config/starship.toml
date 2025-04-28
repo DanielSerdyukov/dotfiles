@@ -61,7 +61,9 @@ Redhat = "󱄛"
 RedHatEnterprise = "󱄛"
 
 [username]
-disabled = true
+style_user = "bg:color_bg1 fg:color_fg1"
+style_root = "bg:color_bg1 fg:color_red"
+format = "[ $user in ]($style)"
 
 [directory]
 read_only = "  "
