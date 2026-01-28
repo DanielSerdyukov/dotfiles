@@ -1,39 +1,36 @@
 # ============================================================================
 # Dotfiles Management with GNU Stow
 # ============================================================================
-# This justfile provides commands to manage dotfiles using GNU Stow.
-# Stow creates symlinks from this repository to your home directory.
-#
-# Usage:
-#   just                  # Show all available commands
-#   just bootstrap        # Install stow if not present
-#   just install zsh      # Enable zsh configuration
-#   just uninstall nvim   # Disable neovim configuration
-#
-# Prerequisites:
-#   - GNU Stow (installed automatically via bootstrap)
-#   - macOS (brew) or Debian-based Linux (apt)
+
+packages := "stow git zoxide fd fzf eza bat exiftool starship"
 
 # Default recipe - show all available commands
-default:
-    @just --list
-
-# Check that `GNU Stow` if installed
 [private]
+default:
+    @{{ just_executable() }} --list
+
+# Install required packages
 bootstrap:
-    @command ! -v stow &>/dev/null && echo "" && echo "  [✗] GNU Stow is not installed" && echo "" && exit 1;
+    #!/usr/bin/env bash
+    set -euo pipefail
+    command -v brew >/dev/null 2>&1 || { echo "  [✗] Homebrew is not installed" >&2; exit 1; }
+    for package in {{packages}}; do
+        if ! command -v $package >/dev/null 2>&1; then
+            brew install $package
+        fi
+    done
 
-# Enable a configuration (ghostty, nvim, starship, or zsh)
-install recipe: bootstrap
-    @stow -t ~ {{recipe}}
+# Link a config (e.g., ghostty, nvim, starship, zsh)
+link config: bootstrap
+    @stow -t ~ {{config}}
     @echo ""
-    @echo "  [✓] {{recipe}} configuration enabled"
+    @echo "  [✓] {{config}} config enabled"
 
-# Disable a configuration (ghostty, nvim, starship, or zsh)
-uninstall recipe: bootstrap
-    @stow -t ~ -D {{recipe}}
+# Unlink a config (e.g., ghostty, nvim, starship, zsh)
+unlink config: bootstrap
+    @stow -t ~ {{config}}
     @echo ""
-    @echo "  [✗] {{recipe}} configuration disabled"
+    @echo "  [✗] {{config}} config disabled"
 
 # Show which configurations are currently linked
 status:
@@ -53,17 +50,3 @@ status:
     @echo "Ghostty:"
     @[[ -L ~/.config/ghostty ]] && echo "  [✓] ghostty is linked" || echo "  [✗] ghostty not linked"
     @echo ""
-
-# Check if required and optional tools are installed
-doctor:
-    @echo "=== Healthcheck ==="
-    @echo ""
-    @command -v git &>/dev/null && echo "  [✓] git" || echo "  [✗] git (required)"
-    @command -v starship &>/dev/null && echo "  [✓] starship" || echo "  [✗] starship"
-    @command -v zoxide &>/dev/null && echo "  [✓] zoxide" || echo "  [✗] zoxide"
-    @command -v eza &>/dev/null && echo "  [✓] eza" || echo "  [✗] eza"
-    @command -v fzf &>/dev/null && echo "  [✓] fzf" || echo "  [✗] fzf"
-    @command -v bat &>/dev/null && echo "  [✓] bat" || echo "  [✗] bat"
-    @command -v ripgrep &>/dev/null && echo "  [✓] ripgrep" || echo "  [✗] ripgrep"
-    @command -v exiftool &>/dev/null && echo "  [✓] exiftool" || echo "  [✗] exiftool"
-    @command -v chafa &>/dev/null && echo "  [✓] chafa" || echo "  [✗] chafa"

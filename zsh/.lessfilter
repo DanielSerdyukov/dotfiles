@@ -46,8 +46,6 @@ case "$mime_type" in
     image/*)
         if command -v exiftool &>/dev/null; then
             exiftool "$file"
-        elif command -v chafa &>/dev/null; then
-            chafa "$file"
         else
             file "$file"
         fi

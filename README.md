@@ -1,176 +1,141 @@
 # Dotfiles
 
-Personal configuration files for macOS development environment.
+Personal configuration files for macOS development environment, managed with [GNU Stow](https://www.gnu.org/software/stow/).
+
+## Overview
+
+This repository contains configuration files for:
+
+- **Zsh** - Shell configuration with modern plugins and enhancements
+- **Starship** - Fast, customizable shell prompt
+- **Neovim** - Text editor configuration
+- **Ghostty** - Terminal emulator settings
+
+## Prerequisites
+
+- **Homebrew** - Package manager for installing tools
+- **GNU Stow** - Symlink manager for dotfiles
+
+Install Homebrew if not already installed:
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
 
 ## Quick Start
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/dotfiles.git ~/.dotfiles
+git clone <repository-url> ~/.dotfiles
 cd ~/.dotfiles
 ```
 
-2. Install dependencies:
+2. Install required packages:
 ```bash
-brew install just stow
+just bootstrap
 ```
 
-3. Install configurations:
+3. Link the configurations you want:
 ```bash
-just install zsh
-just install starship
-# Or install others: ghostty, nvim
+just link zsh
+just link starship
+just link nvim
+just link ghostty
 ```
 
-## What's Included
+4. Check the status of your linked configurations:
+```bash
+just status
+```
 
-### Shell Configuration (Zsh)
-- **History**: Shared history with deduplication
-- **Completions**: Enhanced with caching and fuzzy matching
-- **Plugins** (via zinit):
-  - `fzf-tab` - Fuzzy completion menus
-  - `zsh-syntax-highlighting` - Syntax highlighting
-  - `zsh-autosuggestions` - Fish-like suggestions
-  - `zsh-completions` - Additional completions
+## Tools Installed
 
-### Tools Integration
-- **Starship** - Fast, customizable prompt with Catppuccin Mocha theme
-- **Zoxide** - Smart directory jumping (replaces cd)
-- **Eza** - Modern ls replacement with icons and git status
-- **FZF** - Fuzzy finder for files, history, and completions
-- **Bat** - Cat clone with syntax highlighting
+The `bootstrap` recipe installs these essential tools via Homebrew:
 
-### Terminal Emulator
-- **Ghostty** - GPU-accelerated terminal emulator config
-
-### Editor
-- **Neovim** - Modern vim-based editor configuration
+- **stow** - GNU Stow symlink manager
+- **git** - Version control
+- **zoxide** - Smart directory jumper
+- **fd** - Fast alternative to find
+- **fzf** - Fuzzy finder for files and history
+- **eza** - Modern ls replacement
+- **bat** - cat with syntax highlighting
+- **exiftool** - Read/write metadata in files
+- **starship** - Cross-shell prompt
 
 ## Available Commands
 
-Run `just` to see all available commands:
+| Command | Description |
+|---------|-------------|
+| `just bootstrap` | Install required packages via Homebrew |
+| `just link <config>` | Link a configuration (e.g., `just link zsh`) |
+| `just unlink <config>` | Unlink a configuration (e.g., `just unlink zsh`) |
+| `just status` | Show which configurations are currently linked |
 
-```bash
-just                      # Show available commands
-just install <package>    # Enable a configuration (ghostty, nvim, starship, zsh)
-just uninstall <package>  # Disable a configuration
-just status               # Show which configurations are linked
-just doctor               # Check if required and optional tools are installed
-```
+## Directory Structure
 
-### Examples
-
-```bash
-# Install specific configs
-just install zsh
-just install starship
-
-# Uninstall a config
-just uninstall nvim
-
-# Check what's installed
-just status
-
-# Check which tools you have
-just doctor
-```
-
-## Key Bindings
-
-### Shell
-- `Ctrl+R` - Fuzzy search history
-- `Ctrl+T` - Fuzzy find files
-- `Alt+C` - Fuzzy cd to directory
-- `Ctrl+←/→` - Navigate by word
-- `↑/↓` - History search (cursor at end)
-
-### Zoxide
-- `cd <partial-name>` - Jump to frequently used directory
-- `cdi` - Interactive directory selection
-
-## File Structure
+Each tool's configuration is stored in its own directory:
 
 ```
 .
-├── ghostty/
-│   └── .config/ghostty/       # Ghostty terminal config
-├── nvim/
-│   └── .config/nvim/          # Neovim configuration
-├── starship/
-│   └── .config/starship.toml  # Starship prompt config
-├── zsh/
-│   ├── .zshenv                # Environment variables
-│   ├── .zshrc                 # Interactive shell config
-│   └── .lessfilter            # Less preprocessor
-├── justfile                   # Command runner tasks
-└── CLAUDE.md                  # AI assistant context
+├── ghostty/          # Ghostty terminal emulator
+│   └── .config/ghostty/
+├── nvim/             # Neovim editor
+│   └── .config/nvim/
+├── starship/         # Starship prompt
+│   └── .config/starship.toml
+└── zsh/              # Zsh shell
+    ├── .zshenv       # Environment variables
+    ├── .zshrc        # Interactive shell config
+    └── .lessfilter   # Less pager preprocessor
 ```
 
-## Requirements
+## Zsh Features
 
-### Required
-- macOS (Darwin)
-- Git
-- Zsh
+### Plugin Manager
+- **Zinit** - Fast, flexible plugin manager
+- Auto-installs on first run
+- XDG Base Directory compliant
 
-### Recommended
-- [Homebrew](https://brew.sh)
-- [Just](https://github.com/casey/just) - Command runner
-- [GNU Stow](https://www.gnu.org/software/stow/) - Symlink manager
+### Installed Plugins
+- `zsh-syntax-highlighting` - Command syntax highlighting
+- `zsh-autosuggestions` - Fish-like command suggestions
+- `zsh-completions` - Additional completion definitions
+- `fzf-tab` - Fuzzy finder for completion menu
 
-### Optional Tools
-Check what you have installed with `just doctor`, then install via Homebrew:
-- [Neovim](https://neovim.io/) - Modern vim (`brew install neovim`)
-- [Starship](https://starship.rs/) - Shell prompt (`brew install starship`)
-- [Zoxide](https://github.com/ajeetdsouza/zoxide) - Smart cd (`brew install zoxide`)
-- [Eza](https://github.com/eza-community/eza) - Modern ls (`brew install eza`)
-- [FZF](https://github.com/junegunn/fzf) - Fuzzy finder (`brew install fzf`)
-- [fd](https://github.com/sharkdp/fd) - Fast find (`brew install fd`)
-- [Bat](https://github.com/sharkdp/bat) - Cat with syntax highlighting (`brew install bat`)
-- [Ripgrep](https://github.com/BurntSushi/ripgrep) - Fast grep (`brew install ripgrep`)
-- [Exiftool](https://exiftool.org/) - Image metadata (`brew install exiftool`)
-- [Chafa](https://hpjansson.org/chafa/) - Terminal image viewer (`brew install chafa`)
+### Key Bindings
+- `Ctrl+T` - Fuzzy find files in current directory
+- `Ctrl+R` - Fuzzy search command history
+- `Alt+C` - Fuzzy cd into directory
 
-## XDG Base Directory
+### Enhanced Commands
+- `cd` - Replaced with zoxide for smart directory navigation
+- `cdi` - Interactive directory selection
+- `ls` - Replaced with eza (colorized, directories first)
+- `ll` - Long format with icons and git status
+- `lla` - Long format including hidden files
+- `lt` - Tree view with icons
 
-This configuration follows the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html):
+### Less Pager Enhancement
+The `.lessfilter` script provides rich previews for `less`:
+- **Directories** - Tree view with eza
+- **Code/Text** - Syntax highlighting with bat
+- **Images** - Preview metadata with exiftool
 
-- `$XDG_CONFIG_HOME` → `~/.config` - Configuration files
-- `$XDG_DATA_HOME` → `~/.local/share` - Data files
-- `$XDG_CACHE_HOME` → `~/.cache` - Cache files
-- `$XDG_STATE_HOME` → `~/.local/state` - State files
+All features gracefully fallback to standard tools if optional dependencies are missing.
 
-## Customization
+## Configuration Philosophy
 
-To customize:
+- **XDG Compliance** - Follow XDG Base Directory specification
+- **Graceful Fallbacks** - Work without optional dependencies
+- **PATH Management** - Only `~/.local/bin` is added to PATH
+- **Minimal & Focused** - Clean configurations without bloat
 
-1. Edit files in `~/.dotfiles/`
-2. Changes take effect immediately (files are symlinked)
-3. For zsh changes, run `source ~/.zshrc` or restart shell
+## Uninstalling
 
-## Troubleshooting
+To remove configurations:
 
-### Check installation status
 ```bash
-just status
+just unlink zsh
+just unlink starship
+just unlink nvim
+just unlink ghostty
 ```
-
-### Check which tools are installed
-```bash
-just doctor
-```
-
-### GNU Stow not found
-```bash
-brew install stow
-```
-
-### Reinstall a configuration
-```bash
-just uninstall zsh
-just install zsh
-```
-
-## License
-
-MIT

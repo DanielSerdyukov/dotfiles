@@ -49,7 +49,7 @@ if command -v fzf &>/dev/null; then
     FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --exclude .git'
     FZF_COMPLETION_PATH_OPTS="--walker file,dir,follow,hidden"
     FZF_COMPLETION_DIR_OPTS="--walker dir,follow"
-    
+
     # Load fzf shell integration
     eval "$(fzf --zsh)"
 
@@ -60,7 +60,7 @@ if command -v fzf &>/dev/null; then
     _fzf_compgen_dir() {
         fd --type d --hidden --follow --exclude ".git" . "$1"
     }
-    
+
     zinit light Aloxaf/fzf-tab
 
     zstyle ':completion:*' menu no
@@ -79,21 +79,6 @@ zinit light zsh-users/zsh-completions
 
 # Reload completions after loading plugins
 zinit cdreplay -q
-
-# ============================================================================
-# FZF-Tab Configuration
-# ============================================================================
-# Disable sort when completing `git checkout`
-# zstyle ':completion:*:git-checkout:*' sort false
-
-# # Set descriptions format to enable group support
-# zstyle ':completion:*:descriptions' format '[%d]'
-
-# # Switch group using `<` and `>`
-# zstyle ':fzf-tab:*' switch-group '<' '>'
-
-# # Use tmux popup for fzf-tab (if in tmux)
-# zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 
 # ============================================================================
 # Directory Navigation
