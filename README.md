@@ -10,19 +10,16 @@ git clone https://github.com/yourusername/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ```
 
-2. Install just (command runner):
+2. Install dependencies:
 ```bash
-brew install just
+brew install just stow
 ```
 
-3. Install all configurations:
+3. Install configurations:
 ```bash
-just install
-```
-
-4. Install recommended tools:
-```bash
-just install-tools
+just install zsh
+just install starship
+# Or install others: ghostty, nvim
 ```
 
 ## What's Included
@@ -54,32 +51,28 @@ just install-tools
 Run `just` to see all available commands:
 
 ```bash
-just                    # Show available commands
-just enable <package>   # Enable specific config (zsh, starship, nvim, ghostty)
-just disable <package>  # Disable specific config
-just enable-all         # Enable all configs (alias: install)
-just disable-all        # Disable all configs (alias: uninstall)
-just status             # Show what's installed
-just check-tools        # Check which tools are installed
-just install-tools      # Install recommended tools
-just update-zsh         # Update zsh plugins
-just reinstall          # Reinstall all configs
+just                      # Show available commands
+just install <package>    # Enable a configuration (ghostty, nvim, starship, zsh)
+just uninstall <package>  # Disable a configuration
+just status               # Show which configurations are linked
+just doctor               # Check if required and optional tools are installed
 ```
 
 ### Examples
 
 ```bash
-# Enable specific configs
-just enable zsh
-just enable starship
+# Install specific configs
+just install zsh
+just install starship
 
-# Disable a config
-just disable nvim
+# Uninstall a config
+just uninstall nvim
 
-# Enable all at once
-just enable-all
-# or
-just install
+# Check what's installed
+just status
+
+# Check which tools you have
+just doctor
 ```
 
 ## Key Bindings
@@ -126,17 +119,17 @@ just install
 - [GNU Stow](https://www.gnu.org/software/stow/) - Symlink manager
 
 ### Optional Tools
-Install with `just install-tools`:
-- [Neovim](https://neovim.io/) - Modern vim
-- [Starship](https://starship.rs/) - Shell prompt
-- [Zoxide](https://github.com/ajeetdsouza/zoxide) - Smart cd
-- [Eza](https://github.com/eza-community/eza) - Modern ls
-- [FZF](https://github.com/junegunn/fzf) - Fuzzy finder
-- [fd](https://github.com/sharkdp/fd) - Fast find
-- [Bat](https://github.com/sharkdp/bat) - Cat with syntax highlighting
-- [Ripgrep](https://github.com/BurntSushi/ripgrep) - Fast grep
-- [Exiftool](https://exiftool.org/) - Image metadata
-- [Chafa](https://hpjansson.org/chafa/) - Terminal image viewer
+Check what you have installed with `just doctor`, then install via Homebrew:
+- [Neovim](https://neovim.io/) - Modern vim (`brew install neovim`)
+- [Starship](https://starship.rs/) - Shell prompt (`brew install starship`)
+- [Zoxide](https://github.com/ajeetdsouza/zoxide) - Smart cd (`brew install zoxide`)
+- [Eza](https://github.com/eza-community/eza) - Modern ls (`brew install eza`)
+- [FZF](https://github.com/junegunn/fzf) - Fuzzy finder (`brew install fzf`)
+- [fd](https://github.com/sharkdp/fd) - Fast find (`brew install fd`)
+- [Bat](https://github.com/sharkdp/bat) - Cat with syntax highlighting (`brew install bat`)
+- [Ripgrep](https://github.com/BurntSushi/ripgrep) - Fast grep (`brew install ripgrep`)
+- [Exiftool](https://exiftool.org/) - Image metadata (`brew install exiftool`)
+- [Chafa](https://hpjansson.org/chafa/) - Terminal image viewer (`brew install chafa`)
 
 ## XDG Base Directory
 
@@ -157,24 +150,25 @@ To customize:
 
 ## Troubleshooting
 
-### Zsh plugins not loading
-```bash
-just update-zsh
-```
-
 ### Check installation status
 ```bash
 just status
 ```
 
-### Check which tools are missing
+### Check which tools are installed
 ```bash
-just check-tools
+just doctor
 ```
 
-### Reinstall everything
+### GNU Stow not found
 ```bash
-just reinstall
+brew install stow
+```
+
+### Reinstall a configuration
+```bash
+just uninstall zsh
+just install zsh
 ```
 
 ## License
