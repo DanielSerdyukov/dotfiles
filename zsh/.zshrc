@@ -39,6 +39,7 @@ zstyle ':completion:*' complete true
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,comm -c -r -w"
 
 # ============================================================================
 # FZF Configuration
@@ -64,10 +65,17 @@ if command -v fzf &>/dev/null; then
     zinit light Aloxaf/fzf-tab
 
     zstyle ':completion:*' menu no
+    zstyle ':completion:*:descriptions' format '[%d]'
+    zstyle ':completion:*:git-checkout:*' sort false
     zstyle ':fzf-tab:*' fzf-flags --height=40% --layout=reverse --info=inline --border --pointer ▶
     zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -a --color=always --icons=always --git --group-directories-first --tree --git-ignore $realpath'
+    zstyle ':fzf-tab:complete:brew-(install|uninstall|search|info):*-argument-rest' fzf-preview 'HOMEBREW_COLOR=1 brew info $word'
+    zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-preview 'ps -p $word -o time,%cpu,%mem,command -w'
     zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
+    zstyle ':fzf-tab:complete:git-(add|diff|restore):*' fzf-preview 'git diff $word | delta'
+    zstyle ':fzf-tab:complete:git-(checkout|log):*' fzf-preview 'git log --color=always $word'
     zstyle ':fzf-tab:complete:*:*' fzf-preview 'less ${(Q)realpath}'
+    zstyle ':fzf-tab:*' switch-group '<' '>'
 fi
 
 # ============================================================================

@@ -37,6 +37,8 @@ case "$mime_type" in
     text/*)
         if command -v bat &>/dev/null; then
             bat --color=always --style=numbers,changes --paging=never "$file"
+        elif command -v batcat &>/dev/null; then
+            batcat --color=always --style=numbers,changes --paging=never "$file"
         else
             cat "$file"
         fi
