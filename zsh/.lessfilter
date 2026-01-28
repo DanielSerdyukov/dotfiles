@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+# Exit on error
+set -euo pipefail
+
+# Check arguments
+if [[ $# -ne 1 ]]; then
+    >&2 echo "usage: $0 FILENAME"
+    exit 1
+fi
+
+# Expand tilde and resolve path
+file="${1/#\~\//$HOME/}"
+
+# Check if file exists
+if [[ ! -e "$file" ]]; then
+    >&2 echo "error: file does not exist: $file"
+    exit 1
+fi
+
+# Handle directories
+if [[ -d "$file" ]]; then
+    if command -v eza &>/dev/null; then
+        eza -la --color=always --icons=always --git --group-directories-first --tree --git-ignore "$file"
+    else
+        ls -lah --color=auto "$file"
+    fi
+    exit 0
+fi
+
+# Get MIME type
+mime_type=$(file --dereference --brief --mime-type -- "$file")
+
+# Handle different file types
+case "$mime_type" in
+    # Text files and source code - use bat if available
+    text/*)
+        if command -v bat &>/dev/null; then
+            bat --color=always --style=numbers,changes --paging=never "$file"
+        else
+            cat "$file"
+        fi
+        ;;
+
+    # Images - show metadata
+    image/*)
+        if command -v exiftool &>/dev/null; then
+            exiftool "$file"
+        elif command -v chafa &>/dev/null; then
+            chafa "$file"
+        else
+            file "$file"
+        fi
+        ;;
+
+    # Default: use file command
+    *)
+        file "$file"
+        ;;
+esac
+
+exit 0
