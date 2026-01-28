@@ -55,13 +55,31 @@ Run `just` to see all available commands:
 
 ```bash
 just                    # Show available commands
-just install            # Install all configs
-just install-zsh        # Install only zsh config
-just uninstall          # Uninstall all configs
+just enable <package>   # Enable specific config (zsh, starship, nvim, ghostty)
+just disable <package>  # Disable specific config
+just enable-all         # Enable all configs (alias: install)
+just disable-all        # Disable all configs (alias: uninstall)
 just status             # Show what's installed
 just check-tools        # Check which tools are installed
 just install-tools      # Install recommended tools
 just update-zsh         # Update zsh plugins
+just reinstall          # Reinstall all configs
+```
+
+### Examples
+
+```bash
+# Enable specific configs
+just enable zsh
+just enable starship
+
+# Disable a config
+just disable nvim
+
+# Enable all at once
+just enable-all
+# or
+just install
 ```
 
 ## Key Bindings

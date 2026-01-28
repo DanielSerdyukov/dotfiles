@@ -1,105 +1,138 @@
 # Dotfiles management with GNU Stow
 # Run `just --list` to see all available commands
 
+# Available packages
+packages := "zsh starship nvim ghostty"
+
 # Default recipe - show help
 default:
     @just --list
 
-# Install all configurations
-install: install-zsh install-starship install-nvim install-ghostty
-    @echo "✓ All configurations installed"
+# Enable a specific package (e.g., just enable zsh)
+enable package:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    case "{{package}}" in
+        zsh)
+            echo "Enabling zsh config..."
+            if command -v stow &>/dev/null; then
+                stow -v -t ~ zsh
+            else
+                ln -sf "{{justfile_directory()}}/zsh/.zshrc" ~/.zshrc
+                ln -sf "{{justfile_directory()}}/zsh/.zshenv" ~/.zshenv
+                ln -sf "{{justfile_directory()}}/zsh/.lessfilter" ~/.lessfilter
+            fi
+            echo "✓ Zsh config enabled"
+            ;;
+        starship)
+            echo "Enabling starship config..."
+            mkdir -p ~/.config
+            if command -v stow &>/dev/null; then
+                stow -v -t ~ starship
+            else
+                ln -sf "{{justfile_directory()}}/starship/.config/starship.toml" ~/.config/starship.toml
+            fi
+            echo "✓ Starship config enabled"
+            ;;
+        nvim)
+            echo "Enabling nvim config..."
+            mkdir -p ~/.config
+            if command -v stow &>/dev/null; then
+                stow -v -t ~ nvim
+            else
+                ln -sf "{{justfile_directory()}}/nvim/.config/nvim" ~/.config/nvim
+            fi
+            echo "✓ Neovim config enabled"
+            ;;
+        ghostty)
+            echo "Enabling ghostty config..."
+            mkdir -p ~/.config
+            if command -v stow &>/dev/null; then
+                stow -v -t ~ ghostty
+            else
+                ln -sf "{{justfile_directory()}}/ghostty/.config/ghostty" ~/.config/ghostty
+            fi
+            echo "✓ Ghostty config enabled"
+            ;;
+        *)
+            echo "✗ Unknown package: {{package}}"
+            echo "Available packages: {{packages}}"
+            exit 1
+            ;;
+    esac
 
-# Install zsh configuration
-install-zsh:
-    @echo "Installing zsh config..."
-    @if command -v stow &>/dev/null; then \
-        stow -v -t ~ zsh; \
-    else \
-        ln -sf "{{justfile_directory()}}/zsh/.zshrc" ~/.zshrc; \
-        ln -sf "{{justfile_directory()}}/zsh/.zshenv" ~/.zshenv; \
-        ln -sf "{{justfile_directory()}}/zsh/.lessfilter" ~/.lessfilter; \
-    fi
-    @echo "✓ Zsh config installed"
+# Disable a specific package (e.g., just disable zsh)
+disable package:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    case "{{package}}" in
+        zsh)
+            echo "Disabling zsh config..."
+            if command -v stow &>/dev/null; then
+                stow -v -D -t ~ zsh
+            else
+                rm -f ~/.zshrc ~/.zshenv ~/.lessfilter
+            fi
+            echo "✓ Zsh config disabled"
+            ;;
+        starship)
+            echo "Disabling starship config..."
+            if command -v stow &>/dev/null; then
+                stow -v -D -t ~ starship
+            else
+                rm -f ~/.config/starship.toml
+            fi
+            echo "✓ Starship config disabled"
+            ;;
+        nvim)
+            echo "Disabling nvim config..."
+            if command -v stow &>/dev/null; then
+                stow -v -D -t ~ nvim
+            else
+                rm -f ~/.config/nvim
+            fi
+            echo "✓ Neovim config disabled"
+            ;;
+        ghostty)
+            echo "Disabling ghostty config..."
+            if command -v stow &>/dev/null; then
+                stow -v -D -t ~ ghostty
+            else
+                rm -f ~/.config/ghostty
+            fi
+            echo "✓ Ghostty config disabled"
+            ;;
+        *)
+            echo "✗ Unknown package: {{package}}"
+            echo "Available packages: {{packages}}"
+            exit 1
+            ;;
+    esac
 
-# Install starship configuration
-install-starship:
-    @echo "Installing starship config..."
-    @mkdir -p ~/.config
-    @if command -v stow &>/dev/null; then \
-        stow -v -t ~ starship; \
-    else \
-        ln -sf "{{justfile_directory()}}/starship/.config/starship.toml" ~/.config/starship.toml; \
-    fi
-    @echo "✓ Starship config installed"
+# Enable all configurations
+enable-all:
+    @just enable zsh
+    @just enable starship
+    @just enable nvim
+    @just enable ghostty
+    @echo "✓ All configurations enabled"
 
-# Install neovim configuration
-install-nvim:
-    @echo "Installing nvim config..."
-    @mkdir -p ~/.config
-    @if command -v stow &>/dev/null; then \
-        stow -v -t ~ nvim; \
-    else \
-        ln -sf "{{justfile_directory()}}/nvim/.config/nvim" ~/.config/nvim; \
-    fi
-    @echo "✓ Neovim config installed"
+# Disable all configurations
+disable-all:
+    @just disable zsh
+    @just disable starship
+    @just disable nvim
+    @just disable ghostty
+    @echo "✓ All configurations disabled"
 
-# Install ghostty configuration
-install-ghostty:
-    @echo "Installing ghostty config..."
-    @mkdir -p ~/.config
-    @if command -v stow &>/dev/null; then \
-        stow -v -t ~ ghostty; \
-    else \
-        ln -sf "{{justfile_directory()}}/ghostty/.config/ghostty" ~/.config/ghostty; \
-    fi
-    @echo "✓ Ghostty config installed"
+# Alias for enable-all
+install: enable-all
 
-# Uninstall all configurations
-uninstall: uninstall-zsh uninstall-starship uninstall-nvim uninstall-ghostty
-    @echo "✓ All configurations uninstalled"
+# Alias for disable-all
+uninstall: disable-all
 
-# Uninstall zsh configuration
-uninstall-zsh:
-    @echo "Uninstalling zsh config..."
-    @if command -v stow &>/dev/null; then \
-        stow -v -D -t ~ zsh; \
-    else \
-        rm -f ~/.zshrc ~/.zshenv ~/.lessfilter; \
-    fi
-    @echo "✓ Zsh config uninstalled"
-
-# Uninstall starship configuration
-uninstall-starship:
-    @echo "Uninstalling starship config..."
-    @if command -v stow &>/dev/null; then \
-        stow -v -D -t ~ starship; \
-    else \
-        rm -f ~/.config/starship.toml; \
-    fi
-    @echo "✓ Starship config uninstalled"
-
-# Uninstall neovim configuration
-uninstall-nvim:
-    @echo "Uninstalling nvim config..."
-    @if command -v stow &>/dev/null; then \
-        stow -v -D -t ~ nvim; \
-    else \
-        rm -f ~/.config/nvim; \
-    fi
-    @echo "✓ Neovim config uninstalled"
-
-# Uninstall ghostty configuration
-uninstall-ghostty:
-    @echo "Uninstalling ghostty config..."
-    @if command -v stow &>/dev/null; then \
-        stow -v -D -t ~ ghostty; \
-    else \
-        rm -f ~/.config/ghostty; \
-    fi
-    @echo "✓ Ghostty config uninstalled"
-
-# Reinstall all configurations (uninstall then install)
-reinstall: uninstall install
+# Reinstall all configurations (disable then enable)
+reinstall: disable-all enable-all
     @echo "✓ All configurations reinstalled"
 
 # Show installation status
