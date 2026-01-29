@@ -32,7 +32,7 @@ echo "  [i] Detected OS: $OS_TYPE"
 if [[ "$OS_TYPE" == "macos" ]]; then
     PACKAGES="stow git zoxide fd fzf eza bat exiftool starship"
 else
-    PACKAGES="stow git zoxide fd-find fzf ezs bat exiftool starship"
+    PACKAGES="stow git zoxide fd-find fzf eza bat exiftool starship"
 fi
 
 # ============================================================================
