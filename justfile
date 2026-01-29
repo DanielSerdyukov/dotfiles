@@ -2,23 +2,14 @@
 # Dotfiles Management with GNU Stow
 # ============================================================================
 
-packages := "stow git zoxide fd fzf eza bat exiftool starship"
-
 # Default recipe - show all available commands
 [private]
 default:
     @{{ just_executable() }} --list
 
-# Install required packages
+# Install required packages and setup environment
 bootstrap:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    command -v brew >/dev/null 2>&1 || { echo "  [✗] Homebrew is not installed" >&2; exit 1; }
-    for package in {{packages}}; do
-        if ! command -v $package >/dev/null 2>&1; then
-            brew install $package
-        fi
-    done
+    @./bootstrap.sh
 
 # Link a config (e.g., ghostty, nvim, starship, zsh)
 link config: bootstrap
@@ -40,6 +31,7 @@ status:
     @[[ -L ~/.zshrc ]] && echo "  [✓] .zshrc is linked" || echo "  [✗] .zshrc not linked"
     @[[ -L ~/.zshenv ]] && echo "  [✓] .zshenv is linked" || echo "  [✗] .zshenv not linked"
     @[[ -L ~/.lessfilter ]] && echo "  [✓] .lessfilter is linked" || echo "  [✗] .lessfilter not linked"
+    @[[ -f ~/.zprofile ]] && echo "  [✓] .zprofile exists" || echo "  [✗] .zprofile not found"
     @echo ""
     @echo "Starship:"
     @[[ -L ~/.config/starship.toml ]] && echo "  [✓] starship is linked" || echo "  [✗] starship not linked"
