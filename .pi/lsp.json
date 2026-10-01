@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "servers": [
+    {
+      "id": "luals",
+      "enabled": true,
+      "include": ["**/*.lua"],
+      "rootMarkers": [".luarc.json"],
+      "bin": "lua-language-server",
+      "args": [],
+      "cwd": "{root}",
+      "languageIdByExtension": { ".lua": "lua" },
+      "startupTimeoutMs": 45000,
+      "diagnosticsWaitMs": 1500,
+      "initializationOptions": {},
+      "settings": {}
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Editor / vim noise
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Local overrides — never stow secrets
+*.local
+.env
