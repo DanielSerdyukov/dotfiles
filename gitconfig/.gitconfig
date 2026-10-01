@@ -1,0 +1,20 @@
+[core]
+    ignorecase = true
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = true
+
+[alias]
+    co = checkout
+    sw = switch
+    ci = commit
+    st = status
+    br = branch
+    lg = log --oneline --graph --decorate --all
+    ca = commit --amend --no-edit
+
+[include]
+    path = ~/.config/git/local.gitconfig

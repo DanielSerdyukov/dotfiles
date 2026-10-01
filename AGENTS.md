@@ -28,6 +28,7 @@ stow -R -t ~ <pkg>  # restow after adding/removing/moving files inside a package
 - Packages must not nest; keep one tool per package.
 - Match the existing style of the tool's config (Lua for nvim, etc.).
 - `zsh/.zshrc` sources machine-local drop-ins from `~/.config/zsh.d/*.zsh`. That directory is intentionally outside this repo — never stow, track, or "helpfully" create it.
+- `gitconfig/.gitconfig` includes `~/.config/git/local.gitconfig` for machine-local git settings (user identity, etc.). Also intentionally outside this repo — never stow, track, or create it.
 
 ## Verification
 
