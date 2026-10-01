@@ -27,6 +27,7 @@ stow -R -t ~ <pkg>  # restow after adding/removing/moving files inside a package
 - Never place stowable files loose at the repo root.
 - Packages must not nest; keep one tool per package.
 - Match the existing style of the tool's config (Lua for nvim, etc.).
+- `zsh/.zshrc` sources machine-local drop-ins from `~/.config/zsh.d/*.zsh`. That directory is intentionally outside this repo — never stow, track, or "helpfully" create it.
 
 ## Verification
 
