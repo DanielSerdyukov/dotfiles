@@ -87,6 +87,40 @@ function M.setup(_)
       vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
     end,
   })
+
+  -- Universal `LazyFile` event: fires `User LazyFile` exactly once,
+  -- deferred, the first time nvim opens a real file (not a scratch or
+  -- dashboard buffer). Plugins lazy-load on it via events = { "LazyFile" }
+  -- (see exzo.plugins). The original buffer event is replayed afterwards
+  -- so late-loaded plugins still see the first buffer (mirrors lazy.nvim).
+  local lazy_file_armed = true
+  vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
+    group = augroup("lazy_file"),
+    callback = function(event)
+      if not lazy_file_armed then
+        return
+      end
+      if event.file == "" or vim.bo[event.buf].buftype ~= "" then
+        return
+      end
+      lazy_file_armed = false
+
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "LazyFile",
+        once = true,
+        callback = function()
+          vim.api.nvim_exec_autocmds(event.event, {
+            buffer = event.buf,
+            data = event.data,
+          })
+        end,
+      })
+      -- Deferred so plugin loading doesn't block the first paint.
+      vim.schedule(function()
+        vim.api.nvim_exec_autocmds("User", { pattern = "LazyFile" })
+      end)
+    end,
+  })
 end
 
 return M

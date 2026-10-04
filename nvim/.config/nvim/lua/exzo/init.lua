@@ -6,7 +6,7 @@ function M.setup(opts)
   -- core vim.opt must be set before plugins loads
   require("exzo.config.options").setup(config)
 
-  require("exzo.plugins").setup(config.plugins)
+  require("exzo.plugins").setup(config)
 
   -- core autocmds, keymaps, and native LSP
   require("exzo.config.autocmds").setup(config)
@@ -19,10 +19,6 @@ function M.setup(opts)
       pcall(vim.cmd.colorscheme, "habamax")
     end
   end
-end
-
-function M.gh(repo)
-  return "https://github.com/" .. repo
 end
 
 return M

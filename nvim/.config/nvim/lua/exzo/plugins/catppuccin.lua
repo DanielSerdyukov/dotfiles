@@ -1,6 +1,6 @@
 ---@type ExzoPluginSpec
 return {
-  src = require("exzo").gh("catppuccin/nvim"),
+  src = "https://github.com/catppuccin/nvim",
   name = "catppuccin",
   setup = function()
     require("catppuccin").setup({})
