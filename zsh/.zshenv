@@ -12,9 +12,15 @@ export XDG_DATA_HOME="${HOME}/.local/share"
 export XDG_CACHE_HOME="${HOME}/.cache"
 export XDG_STATE_HOME="${HOME}/.local/state"
 
-# --- Zsh Configuration ---
-export ZDOTDIR="${HOME}"                    # Zsh config directory
-export ZINIT_HOME="${XDG_DATA_HOME}/zinit"  # Zinit plugin manager home
+typeset -U path
+path=("$HOME/.local/bin" $path)
+
+if [[ -d /opt/homebrew/bin ]]; then
+  path=(/opt/homebrew/bin $path)
+elif [[ -d /usr/local/bin ]]; then
+  path=(/usr/local/bin $path)
+fi
+typeset -U path
 
 # --- Default Editor ---
 if command -v nvim &>/dev/null; then
@@ -25,11 +31,5 @@ else
     export VISUAL="vi"
 fi
 
-# --- PATH Configuration ---
-[[ -d "${HOME}/.local/bin" ]] && export PATH="${HOME}/.local/bin:${PATH}"
+# # --- PATH Configuration ---
 [[ -f "${HOME}/.lessfilter" ]] && export LESSOPEN="|${HOME}/.lessfilter %s"
-export LESS="-R"  # pass ANSI colors (e.g. from lessfilter) through
-
-# --- Terminfo ---
-export TERMINFO="$HOME/.terminfo"
-export TERMINFO_DIRS="$HOME/.terminfo:/usr/share/terminfo"

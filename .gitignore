@@ -2,11 +2,15 @@
 .DS_Store
 
 # Editor / vim noise
+.netrwhist
 *.swp
 *.swo
 *~
-.netrwhist
+*.log
 
 # Local overrides — never stow secrets
 *.local
 .env
+
+# ZSH Drop-in customization
+90-local.zsh
